@@ -8,11 +8,12 @@ class Coffee:
     
     @name.setter
     def name(self, new_name):
-        if not hasattr(self, 'name'):
-            if isinstance(new_name, str) and len(new_name) >= 3:
-                self._name = new_name
-            else:
-                raise Exception('Name must be at least 3 characters!')
+        if (
+            isinstance(new_name, str) 
+            and len(new_name) >= 3 
+            and not hasattr(self, 'name')
+            ):
+            self._name = new_name
         else:
             raise Exception('Cannot change the name after initialization!')
     
@@ -20,7 +21,7 @@ class Coffee:
         return [order for order in Order.all if order.coffee == self]
     
     def customers(self):
-        return list(set([order.customer for order in self.orders()]))
+        return list({order.customer for order in self.orders()})
     
     def num_orders(self):
         return len(self.orders())
